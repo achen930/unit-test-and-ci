@@ -1,18 +1,18 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 
-const db = require('./db/connection.js');
+const db = require("./db/connection.js");
 
-const server = app.listen(8080, () => console.log('listening'));
+const server = app.listen(8080, () => console.log("listening"));
 
-app.use(express.static('public'));
+app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const { Todo } = require('./models/Todo.js');
+const { Todo } = require("./models/Todo.js");
 
 //post a to do
-app.post('/todolist', (req, res) => {
+app.post("/todolist", (req, res) => {
 	let todo = new Todo(req.body);
 	todo.save((error) => {
 		if (error) {
@@ -20,7 +20,7 @@ app.post('/todolist', (req, res) => {
 			return;
 		} else {
 			res.status(201).json({
-				message: 'New to do item created',
+				message: "New to do item created",
 				data: todo,
 			});
 		}
@@ -28,7 +28,7 @@ app.post('/todolist', (req, res) => {
 });
 
 // get all to dos
-app.get('/todolist', (req, res) => {
+app.get("/todolist", (req, res) => {
 	Todo.find({}).exec((error, result) => {
 		if (error) {
 			res.status(500).json(error);
@@ -40,7 +40,7 @@ app.get('/todolist', (req, res) => {
 });
 
 //delete item
-app.delete('/todolist/delete/:id', (req, res) => {
+app.delete("/todolist/delete/:id", (req, res) => {
 	const id = req.params.id;
 	Todo.deleteOne({ _id: `${id}` })
 		.then((data) => {
